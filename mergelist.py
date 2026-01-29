@@ -22,3 +22,60 @@ Output: [0]
  
 
 '''
+
+
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+# Convert Python list to linked list
+def list_to_linked(lst):
+    dummy = ListNode(0)
+    curr = dummy
+    for val in lst:
+        curr.next = ListNode(val)
+        curr = curr.next
+    return dummy.next
+
+# Convert linked list to Python list (for printing)
+def linked_to_list(node):
+    res = []
+    while node:
+        res.append(node.val)
+        node = node.next
+    return res
+
+class Solution:
+    def mergeTwoLists(self, list1, list2):
+        """
+        Merge two sorted linked lists and return the head of the new list.
+        """
+        if not list1:
+            return list2
+        if not list2:
+            return list1
+
+        if list1.val < list2.val:
+            list1.next = self.mergeTwoLists(list1.next, list2)
+            return list1
+        else:
+            list2.next = self.mergeTwoLists(list1, list2.next)
+            return list2
+
+# Main block for testing
+if __name__ == "__main__":
+    list1 = [1, 2, 4]
+    list2 = [1, 3, 4]
+
+    # Convert to linked lists
+    l1 = list_to_linked(list1)
+    l2 = list_to_linked(list2)
+
+    # Merge
+    sol = Solution()
+    merged_head = sol.mergeTwoLists(l1, l2)
+
+    # Print result
+    print("Merged List:", linked_to_list(merged_head))
